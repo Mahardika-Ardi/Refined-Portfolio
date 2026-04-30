@@ -7,7 +7,9 @@
     "backend"
   ],
   "scripts": {
-    "dev": "concurrently -n frontend,backend -c blue,green \"npm run dev -w frontend\" \"npm run start:dev -w backend\""
+    "dev": "concurrently -n frontend,backend -c blue,green \"npm run dev -w frontend\" \"npm run start:dev -w backend\"",
+    "build": "npm run build --workspace=backend && npm run build --workspace=frontend",
+    "start:prod": "concurrently -n frontend,backend -c blue,green \"npm run start -w frontend\" \"npm run start:prod -w backend\""
   },
   "keywords": [],
   "author": "Mahardika Arfuri",
