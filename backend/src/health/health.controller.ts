@@ -4,9 +4,11 @@ import {
   HealthCheckService,
   PrismaHealthIndicator,
 } from '@nestjs/terminus';
+import { SkipThrottle } from '@nestjs/throttler';
 import { LoggerService } from 'src/common/logger/logger.service';
 import { PrismaService } from 'src/common/prisma/prisma.service';
 
+@SkipThrottle()
 @Controller('health')
 export class HealthController {
   private readonly logger: LoggerService;

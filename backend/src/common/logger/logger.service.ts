@@ -8,7 +8,7 @@ import {
   combinedFileTransport,
   consoleTransport,
   errorFileTransport,
-} from './logger.config';
+} from '../config/logger.config';
 
 @Injectable()
 export class LoggerService implements NestLoggerService {

@@ -5,11 +5,13 @@ import { ValidationPipe } from '@nestjs/common';
 import { LoggerService } from './common/logger/logger.service';
 import { GlobalExceptionFilter } from './common/filter/http-exception.filter';
 import { ResponseInterceptor } from './common/interceptors/respons.interceptor';
+import cookieParser from 'cookie-parser';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, { bufferLogs: true });
 
   app.enableCors();
+  app.use(cookieParser());
   app.useGlobalInterceptors(new ResponseInterceptor());
   app.useGlobalFilters(new GlobalExceptionFilter(app.get(LoggerService)));
   app.useGlobalPipes(

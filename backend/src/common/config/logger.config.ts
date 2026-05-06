@@ -6,6 +6,7 @@ type WinstonInfo = {
   level: string;
   message: string;
   context?: string;
+  stack?: string;
   [key: string]: unknown;
 };
 
@@ -16,7 +17,23 @@ const timestampFormat = winston.format.timestamp({
 const fileFormat = winston.format.combine(
   timestampFormat,
   winston.format.errors({ stack: true }),
-  winston.format.json(),
+  winston.format.printf((info) => {
+    const { timestamp, level, message, context, stack, ...meta } =
+      info as WinstonInfo;
+    const ctx = context ? `[${context}] ` : '';
+
+    const cleanMeta = Object.fromEntries(
+      Object.entries(meta).filter(([key]) => !IGNORED_META_KEYS.includes(key)),
+    );
+
+    const metaStr = Object.keys(cleanMeta).length
+      ? ` | ${JSON.stringify(cleanMeta)}`
+      : '';
+
+    const stackStr = stack ? `\n${stack}` : '';
+
+    return `[${timestamp}] ${level.toUpperCase()} ${ctx}${message}${metaStr}${stackStr}`;
+  }),
 );
 
 const IGNORED_META_KEYS = [

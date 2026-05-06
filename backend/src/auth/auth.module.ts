@@ -3,6 +3,7 @@ import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
 import { JwtModule } from '@nestjs/jwt';
 import { JwtStrategy } from './helper/jwt.strategy';
+import { OtpService } from 'src/common/otp/otp.service';
 
 @Global()
 @Module({
@@ -14,6 +15,6 @@ import { JwtStrategy } from './helper/jwt.strategy';
     }),
   ],
   controllers: [AuthController],
-  providers: [AuthService, JwtStrategy],
+  providers: [AuthService, JwtStrategy, OtpService],
 })
 export class AuthModule {}
