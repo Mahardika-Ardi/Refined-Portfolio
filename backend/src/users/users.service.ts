@@ -3,12 +3,11 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { PrismaService } from 'src/common/prisma/prisma.service';
 import { LoggerService } from 'src/common/logger/logger.service';
 import { userAdminSelect, userMeSelect } from './user-select';
-import {
-  uploadToCloudinary,
-  deleteFromCloudinary,
-} from 'src/common/config/cloudinary.config';
 import { CacheService } from 'src/common/cache/cache.service';
 import { CACHE_KEYS } from 'src/common/constants/cache-keys.constant';
+import { CloudinaryService } from 'src/common/cloudinary/cloudinary.service';
+import { AppError } from 'src/common/utils/app-error.utils';
+import { PaginationDto } from './dto/pagination.dto';
 
 const CACHE_TTL = 60 * 5;
 
@@ -19,31 +18,76 @@ export class UsersService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly cache: CacheService,
+    private readonly cloudinary: CloudinaryService,
     private readonly loggerService: LoggerService,
   ) {
     this.logger = loggerService.setContext(UsersService.name);
   }
 
-  async findAll() {
+  private async invalidateUsersCache(): Promise<void> {
+    await this.cache.delByPattern(CACHE_KEYS.ALL_USERS);
+    this.logger.debug('Users cache invalidated');
+  }
+
+  async findAll(query: PaginationDto) {
+    const { page = 1, limit = 10, search } = query;
+    const skip = (page - 1) * limit;
+
+    const cacheKey = `${CACHE_KEYS.ALL_USERS}:page=${page}:limit${limit}:search=${search ?? ''}`;
+
     this.logger.log('Fetching all users');
 
-    const cached = await this.cache.get(CACHE_KEYS.ALL_USERS);
+    const cached = await this.cache.get(cacheKey);
     if (cached) {
-      this.logger.debug('Users served from cache');
+      this.logger.debug('Users served from cache', { cacheKey });
       return cached;
     }
 
-    const user = await this.prisma.user.findMany({ select: userAdminSelect });
+    const where = search
+      ? {
+          OR: [
+            { name: { contains: search, mode: 'insensitive' as const } },
+            { email: { contains: search, mode: 'insensitive' as const } },
+          ],
+        }
+      : {};
+    const [users, total] = await this.prisma.$transaction([
+      this.prisma.user.findMany({
+        where,
+        select: userAdminSelect,
+        skip,
+        take: limit,
+        orderBy: { createdAt: 'desc' },
+      }),
+      this.prisma.user.count({ where }),
+    ]);
 
-    if (!user) {
+    if (!users && !total) {
       this.logger.warn('Failed fetching users');
+      throw AppError.notFound('Account', { message: 'Users not found' });
     }
 
-    await this.cache.set(CACHE_KEYS.ALL_USERS, user, CACHE_TTL);
+    const result = {
+      users,
+      meta: {
+        total,
+        page,
+        limit,
+        totalPages: Math.ceil(total / limit),
+        hashNextPage: page < Math.ceil(total / limit),
+        hasPrevPage: page > 1,
+      },
+    };
 
-    this.logger.log('Users fetched from DB and cached', { count: user.length });
+    await this.cache.set(cacheKey, users, CACHE_TTL);
 
-    return user;
+    this.logger.log('Users fetched from DB and cached', {
+      count: users.length,
+      total,
+      page,
+    });
+
+    return result;
   }
 
   async findOne(id: string) {
@@ -56,6 +100,7 @@ export class UsersService {
 
     if (!user) {
       this.logger.warn('Failed fetching user', { userId: id });
+      throw AppError.notFound('Account', { message: 'User not found' });
     }
 
     this.logger.log('User fetched', { userId: id });
@@ -76,9 +121,9 @@ export class UsersService {
     oldPublicId = user?.avatarPublicId ?? null;
 
     if (file) {
-      this.logger.debug('Uploading avatar to Cloudinary', { userId: id });
+      this.logger.debug('Queuing avatar to upload', { userId: id });
 
-      const uploadResult = await uploadToCloudinary(file);
+      const uploadResult = await this.cloudinary.queueUpload(file);
 
       dto.avatarUrl = uploadResult.url;
       dto.avatarPublicId = uploadResult.public_id;
@@ -96,12 +141,11 @@ export class UsersService {
     });
 
     if (file && oldPublicId) {
+      void this.cloudinary.queueDelete(oldPublicId);
       this.logger.debug('Deleting old avatar from Cloudinary', {
         userId: id,
         oldPublicId,
       });
-
-      await deleteFromCloudinary(oldPublicId);
     }
 
     await this.cache.del(CACHE_KEYS.ALL_USERS);
@@ -117,22 +161,21 @@ export class UsersService {
 
   async remove(id: string) {
     this.logger.log('Deleting user', { userId: id });
+
     const user = await this.prisma.user.findUnique({
       where: { id },
       select: { id: true, avatarPublicId: true },
     });
 
     if (user?.avatarPublicId) {
+      void this.cloudinary.queueDelete(user.avatarPublicId);
       this.logger.debug('Deleting avatar from cloudinary', {
         userId: id,
         publicId: user.avatarPublicId,
       });
-
-      await deleteFromCloudinary(user.avatarPublicId);
     }
 
     await this.prisma.user.delete({ where: { id } });
-
     await this.cache.del(CACHE_KEYS.ALL_USERS);
     this.logger.debug('Cache invalidated after user deleted', { userId: id });
     this.logger.log('User deleted', { userId: id });

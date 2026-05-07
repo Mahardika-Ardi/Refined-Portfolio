@@ -16,6 +16,7 @@ import { CurrentUser } from 'src/common/decorators/current-user.decorator';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { multerConfig } from 'src/common/config/multer.config';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { PaginationDto } from './dto/pagination.dto';
 
 @Controller('users')
 export class UsersController {
@@ -24,8 +25,8 @@ export class UsersController {
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Role('ADMIN')
   @Get('findall')
-  findAll() {
-    const data = this.usersService.findAll();
+  async findAll(@Body() query: PaginationDto) {
+    const data = await this.usersService.findAll(query);
     return {
       message: 'Successfully fetching all users',
       data,
@@ -49,10 +50,10 @@ export class UsersController {
   @UseInterceptors(FileInterceptor('avatar', multerConfig))
   async update(
     @CurrentUser('id') id: string,
-    @Body() updateUserDto: UpdateUserDto,
+    @Body() dto: UpdateUserDto,
     @UploadedFile() file?: Express.Multer.File,
   ) {
-    const data = await this.usersService.update(id, updateUserDto, file);
+    const data = await this.usersService.update(id, dto, file);
     return {
       message: 'Successfully updating user',
       data,

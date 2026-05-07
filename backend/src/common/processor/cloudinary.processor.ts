@@ -11,14 +11,14 @@ import {
 } from '../config/cloudinary.config';
 
 type UploadJob = {
-  file: Express.Multer.File;
+  file: Omit<Express.Multer.File, 'buffer'> & { buffer: string };
 };
 
 type DeleteJob = {
   publicId: string;
 };
 
-type CloudinaryUploadResult = {
+export type CloudinaryUploadResult = {
   url: string;
   public_id: string;
 };
@@ -47,7 +47,11 @@ export class CloudinaryProcessor extends WorkerHost {
     this.logger.debug('Processing upload job');
 
     try {
-      const result = await uploadToCloudinary(data.file);
+      const file = {
+        ...data.file,
+        buffer: Buffer.from(data.file.buffer, 'base64'),
+      };
+      const result = await uploadToCloudinary(file);
       this.logger.debug('Upload completed', { publicId: result.public_id });
       return result;
     } catch (error) {

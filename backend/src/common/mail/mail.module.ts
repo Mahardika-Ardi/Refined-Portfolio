@@ -2,7 +2,7 @@ import { Global, Module } from '@nestjs/common';
 import { MailService } from './mail.service';
 import { BullModule } from '@nestjs/bullmq';
 import { MAIL_QUEUE } from '../constants/mail-queue.constant';
-import { MailProcessor } from './mail.processor';
+import { MailProcessor } from '../processor/mail.processor';
 
 @Global()
 @Module({

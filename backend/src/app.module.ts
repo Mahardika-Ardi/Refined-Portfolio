@@ -19,6 +19,7 @@ import { AppCacheModule } from './common/cache/cache.module';
 import { APP_GUARD } from '@nestjs/core';
 import { HttpLoggerMiddleware } from './common/middleware/http-logger.middleware';
 import { BullModule } from '@nestjs/bullmq';
+import { CloudinaryModule } from './common/cloudinary/cloudinary.module';
 
 @Module({
   imports: [
@@ -51,6 +52,7 @@ import { BullModule } from '@nestjs/bullmq';
     RedisModule,
     BlacklistModule,
     AppCacheModule,
+    CloudinaryModule,
   ],
   controllers: [AppController],
   providers: [
