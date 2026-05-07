@@ -4,13 +4,16 @@ import {
   IsStrongPassword,
   Length,
 } from 'class-validator';
+import { ApiProperty } from '@nestjs/swagger';
 
 export class ResetPasswordDto {
+  @ApiProperty({ example: '123456' })
   @IsNotEmpty({ message: 'OTP code is required' })
   @IsString()
   @Length(6, 6, { message: 'OTP must be 6 digits' })
   code!: string;
 
+  @ApiProperty({ example: 'NewStrongPass!123' })
   @IsNotEmpty({ message: 'Password is required' })
   @IsString({ message: 'Password must be a string' })
   @IsStrongPassword(

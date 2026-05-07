@@ -7,7 +7,9 @@ import {
 import { SkipThrottle } from '@nestjs/throttler';
 import { LoggerService } from 'src/common/logger/logger.service';
 import { PrismaService } from 'src/common/prisma/prisma.service';
+import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Health')
 @SkipThrottle()
 @Controller('health')
 export class HealthController {
@@ -24,6 +26,8 @@ export class HealthController {
 
   @Get()
   @HealthCheck()
+  @ApiOperation({ summary: 'Cek status kesehatan layanan dan database' })
+  @ApiResponse({ status: 200, description: 'Service dalam kondisi sehat' })
   async check() {
     try {
       return await this.health.check([

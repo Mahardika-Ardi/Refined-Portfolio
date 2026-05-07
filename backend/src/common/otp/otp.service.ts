@@ -45,7 +45,7 @@ export class OtpService {
 
     await this.prisma.otp.update({
       where: { id: otp.id },
-      data: { isUsed: false },
+      data: { isUsed: true },
     });
 
     return true;

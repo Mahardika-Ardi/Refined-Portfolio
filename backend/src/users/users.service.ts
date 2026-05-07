@@ -74,12 +74,12 @@ export class UsersService {
         page,
         limit,
         totalPages: Math.ceil(total / limit),
-        hashNextPage: page < Math.ceil(total / limit),
+        hasNextPage: page < Math.ceil(total / limit),
         hasPrevPage: page > 1,
       },
     };
 
-    await this.cache.set(cacheKey, users, CACHE_TTL);
+    await this.cache.set(cacheKey, result, CACHE_TTL);
 
     this.logger.log('Users fetched from DB and cached', {
       count: users.length,
@@ -148,7 +148,7 @@ export class UsersService {
       });
     }
 
-    await this.cache.del(CACHE_KEYS.ALL_USERS);
+    await this.invalidateUsersCache();
 
     this.logger.debug('Cache invalidated after user updated', { userId: id });
     this.logger.log('User updated', {
@@ -176,7 +176,7 @@ export class UsersService {
     }
 
     await this.prisma.user.delete({ where: { id } });
-    await this.cache.del(CACHE_KEYS.ALL_USERS);
+    await this.invalidateUsersCache();
     this.logger.debug('Cache invalidated after user deleted', { userId: id });
     this.logger.log('User deleted', { userId: id });
 

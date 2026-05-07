@@ -7,10 +7,12 @@ import {
   Matches,
 } from 'class-validator';
 import { RegisterDto } from 'src/auth/dto/register.dto';
+import { ApiPropertyOptional } from '@nestjs/swagger';
 
 export class UpdateUserDto extends PartialType(
   OmitType(RegisterDto, ['email', 'password'] as const),
 ) {
+  @ApiPropertyOptional({ example: '+6281234567890' })
   @IsOptional()
   @IsString({ message: 'Phone number must be a string' })
   @IsPhoneNumber('ID', {
@@ -19,6 +21,9 @@ export class UpdateUserDto extends PartialType(
   })
   phone?: string;
 
+  @ApiPropertyOptional({
+    example: 'https://res.cloudinary.com/demo/image/upload/v1/avatar.jpg',
+  })
   @IsOptional()
   @IsUrl(
     { require_protocol: true },
@@ -26,6 +31,7 @@ export class UpdateUserDto extends PartialType(
   )
   avatarUrl?: string;
 
+  @ApiPropertyOptional({ example: 'users/avatar_123' })
   @IsOptional()
   @Matches(/^[a-zA-Z0-9/_-]+$/, {
     message: 'Invalid Cloudinary public ID',

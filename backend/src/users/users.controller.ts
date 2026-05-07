@@ -17,7 +17,17 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { multerConfig } from 'src/common/config/multer.config';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { PaginationDto } from './dto/pagination.dto';
+import {
+  ApiBody,
+  ApiConsumes,
+  ApiCookieAuth,
+  ApiOperation,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 
+@ApiTags('Users')
+@ApiCookieAuth('access_token')
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
@@ -25,6 +35,9 @@ export class UsersController {
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Role('ADMIN')
   @Get('findall')
+  @ApiOperation({ summary: 'Ambil semua user (khusus admin)' })
+  @ApiBody({ type: PaginationDto, required: false })
+  @ApiResponse({ status: 200, description: 'Berhasil mengambil daftar user' })
   async findAll(@Body() query: PaginationDto) {
     const data = await this.usersService.findAll(query);
     return {
@@ -35,9 +48,9 @@ export class UsersController {
 
   @UseGuards(JwtAuthGuard)
   @Get('me')
+  @ApiOperation({ summary: 'Ambil profil user yang sedang login' })
+  @ApiResponse({ status: 200, description: 'Berhasil mengambil profil user' })
   async findOne(@CurrentUser('id') id: string) {
-    console.error();
-
     const data = await this.usersService.findOne(id);
     return {
       message: 'Succesfully getting user',
@@ -48,6 +61,10 @@ export class UsersController {
   @UseGuards(JwtAuthGuard)
   @Patch('me')
   @UseInterceptors(FileInterceptor('avatar', multerConfig))
+  @ApiOperation({ summary: 'Update profil user dan avatar opsional' })
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({ type: UpdateUserDto })
+  @ApiResponse({ status: 200, description: 'Berhasil mengupdate user' })
   async update(
     @CurrentUser('id') id: string,
     @Body() dto: UpdateUserDto,
@@ -62,6 +79,8 @@ export class UsersController {
 
   @UseGuards(JwtAuthGuard)
   @Delete('me')
+  @ApiOperation({ summary: 'Hapus akun user sendiri' })
+  @ApiResponse({ status: 200, description: 'User berhasil dihapus' })
   async remove(@CurrentUser('id') id: string) {
     const data = await this.usersService.remove(id);
     return { message: data };

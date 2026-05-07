@@ -6,13 +6,16 @@ import {
   IsPhoneNumber,
   IsNotEmpty,
 } from 'class-validator';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
 export class LogInDto {
+  @ApiProperty({ example: 'jane.doe@mail.com' })
   @IsNotEmpty()
   @IsString({ message: 'Email must be a string' })
   @IsEmail({}, { message: 'Email must be a valid email address' })
   email!: string;
 
+  @ApiProperty({ example: 'StrongPass!123' })
   @IsNotEmpty()
   @IsString({ message: 'Password must be a string' })
   @IsStrongPassword(
@@ -24,6 +27,7 @@ export class LogInDto {
   )
   password!: string;
 
+  @ApiPropertyOptional({ example: '+6281234567890' })
   @IsOptional()
   @IsString({ message: 'Phone number must be a string' })
   @IsPhoneNumber('ID', {
