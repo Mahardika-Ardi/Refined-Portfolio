@@ -51,8 +51,8 @@ async function bootstrap() {
   const logger = app.get(LoggerService);
   app.useLogger(logger);
 
-  await app.listen(process.env.PORT ?? 4000);
-  logger.log('Application started on port 4000', { context: 'Bootstrap' });
+  await app.listen(process.env.PORT ?? 3000);
+  logger.log('Application started on port 3000', { context: 'Bootstrap' });
   logger.log('Swagger docs available at /docs', { context: 'Bootstrap' });
 }
 bootstrap();

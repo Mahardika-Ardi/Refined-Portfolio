@@ -1,0 +1,496 @@
+{
+  "info": {
+    "_postman_id": "21115b17-2d26-4b5d-be29-8e9bb1597ce0",
+    "name": "Portofolio",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "36964252"
+  },
+  "item": [
+    {
+      "name": "User",
+      "item": [
+        {
+          "name": "User Me",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{API}}/users/me",
+              "host": [
+                "{{API}}"
+              ],
+              "path": [
+                "users",
+                "me"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Find All User",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": ""
+            },
+            "url": {
+              "raw": "{{API}}/users/findall",
+              "host": [
+                "{{API}}"
+              ],
+              "path": [
+                "users",
+                "findall"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update Me",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "phone",
+                  "value": "085198185990",
+                  "type": "text",
+                  "uuid": "4d385c56-e54d-4cea-a7db-da05e53da4bf"
+                },
+                {
+                  "key": "avatar",
+                  "type": "file",
+                  "uuid": "205192c0-7e49-4e10-b8a1-86c41523c7b0",
+                  "src": "/C:/Users/USER/Downloads/leon.jpg"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{API}}/users/me",
+              "host": [
+                "{{API}}"
+              ],
+              "path": [
+                "users",
+                "me"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Me",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "phone",
+                  "value": "085198185990",
+                  "type": "text",
+                  "uuid": "4d385c56-e54d-4cea-a7db-da05e53da4bf"
+                },
+                {
+                  "key": "avatar",
+                  "type": "file",
+                  "uuid": "205192c0-7e49-4e10-b8a1-86c41523c7b0",
+                  "src": "/C:/Users/USER/Downloads/leon.jpg"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{API}}/users/me",
+              "host": [
+                "{{API}}"
+              ],
+              "path": [
+                "users",
+                "me"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Register",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"email\": \"deeanakun@gmail.com\",\r\n    \"password\": \"akB@rG00ningx99\",\r\n    \"firstName\": \"Dean\",\r\n    \"lastName\": \"Sigma\",\r\n    \"birthDate\": \"1967-06-07\",\r\n    \"gender\": \"MALE\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{API}}/auth/register",
+              "host": [
+                "{{API}}"
+              ],
+              "path": [
+                "auth",
+                "register"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Register",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"email\": \"deeanakun@gmail.com\",\r\n    \"password\": \"akB@rG00ningx99\",\r\n    \"firstName\": \"Dean\",\r\n    \"lastName\": \"Sigma\",\r\n    \"birthDate\": \"1967-06-07\",\r\n    \"gender\": \"MALE\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{API}}/auth/register",
+                  "host": [
+                    "{{API}}"
+                  ],
+                  "path": [
+                    "auth",
+                    "register"
+                  ]
+                }
+              },
+              "_postman_previewlanguage": null,
+              "header": null,
+              "cookie": [],
+              "body": null
+            },
+            {
+              "name": "Register",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"email\": \"arfurm198@gmail.com\",\r\n    \"password\": \"@12Di412Di\",\r\n    \"firstName\": \"Ardi\",\r\n    \"lastName\": \"Codingg\",\r\n    \"birthDate\": \"1967-06-07\",\r\n    \"gender\": \"MALE\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{API}}/auth/register",
+                  "host": [
+                    "{{API}}"
+                  ],
+                  "path": [
+                    "auth",
+                    "register"
+                  ]
+                }
+              },
+              "_postman_previewlanguage": "",
+              "header": [],
+              "cookie": [
+                {
+                  "expires": "Invalid Date",
+                  "domain": "",
+                  "path": ""
+                }
+              ],
+              "body": ""
+            }
+          ]
+        },
+        {
+          "name": "LogIn",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"email\": \"deeanakun@gmail.com\",\r\n    \"password\": \"akB@rG00ningx99\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{API}}/auth/login",
+              "host": [
+                "{{API}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "LogIn",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"email\": \"deeanakun@gmail.com\",\r\n    \"password\": \"akB@rG00ningx99\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{API}}/auth/login",
+                  "host": [
+                    "{{API}}"
+                  ],
+                  "path": [
+                    "auth",
+                    "login"
+                  ]
+                }
+              },
+              "_postman_previewlanguage": null,
+              "header": null,
+              "cookie": [],
+              "body": null
+            },
+            {
+              "name": "LogIn",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"email\": \"arfurm198@gmail.com\",\r\n    \"password\": \"@12Di412Di\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{API}}/auth/login",
+                  "host": [
+                    "{{API}}"
+                  ],
+                  "path": [
+                    "auth",
+                    "login"
+                  ]
+                }
+              },
+              "_postman_previewlanguage": "",
+              "header": [],
+              "cookie": [
+                {
+                  "expires": "Invalid Date",
+                  "domain": "",
+                  "path": ""
+                }
+              ],
+              "body": ""
+            }
+          ]
+        },
+        {
+          "name": "Forgot Password Send Otp",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": ""
+            },
+            "url": {
+              "raw": "{{API}}/auth/forgot-password",
+              "host": [
+                "{{API}}"
+              ],
+              "path": [
+                "auth",
+                "forgot-password"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Reset Password",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"code\": \"507052\",\r\n    \"password\": \"De@n6gmaKibidiToliet67676767\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{API}}/auth/reset-password",
+              "host": [
+                "{{API}}"
+              ],
+              "path": [
+                "auth",
+                "reset-password"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Refresh OTP Code",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"type\": \"EMAIL_VERIFICATION\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{API}}/auth/refresh-otp",
+              "host": [
+                "{{API}}"
+              ],
+              "path": [
+                "auth",
+                "refresh-otp"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Send Verification Email",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": ""
+            },
+            "url": {
+              "raw": "{{API}}/auth/send-verification-email",
+              "host": [
+                "{{API}}"
+              ],
+              "path": [
+                "auth",
+                "send-verification-email"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Verify Email",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"code\": \"951791\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{API}}/auth/verify-email",
+              "host": [
+                "{{API}}"
+              ],
+              "path": [
+                "auth",
+                "verify-email"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Hello World",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "GET",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": ""
+        },
+        "url": {
+          "raw": "{{API}}",
+          "host": [
+            "{{API}}"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Check Health",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{API}}/health",
+          "host": [
+            "{{API}}"
+          ],
+          "path": [
+            "health"
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}

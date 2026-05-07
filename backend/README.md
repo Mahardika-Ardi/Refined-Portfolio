@@ -1,98 +1,306 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+<div align="center">
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+  <img src="./assets/logo.png" alt="Refined Portfolio Logo" width="120" />
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+# Refined Portfolio — Backend
 
-## Description
+A production-ready REST API built with **NestJS**, featuring authentication, caching, background jobs, and structured logging.
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+[![Backend](https://img.shields.io/badge/Backend-NestJS-E0234E?logo=nestjs)](https://nestjs.com)
+[![Database](https://img.shields.io/badge/Database-PostgreSQL-4169E1?logo=postgresql)](https://postgresql.org)
+[![ORM](https://img.shields.io/badge/ORM-Prisma-2D3748?logo=prisma)](https://prisma.io)
+[![Cache](https://img.shields.io/badge/Cache-Redis-DC382D?logo=redis)](https://redis.io)
+[![Queue](https://img.shields.io/badge/Queue-BullMQ-FF6B6B)](https://docs.bullmq.io)
+[![License](https://img.shields.io/badge/License-MIT-green.svg)](#license)
 
-## Project setup
+[API Docs](#api-docs) ·
+[Report Bug](https://github.com/Mahardika-Ardi/Refined-Portfolio/issues) ·
+[Request Feature](https://github.com/Mahardika-Ardi/Refined-Portfolio/issues)
+
+</div>
+
+---
+
+## 📸 Preview
+
+> Screenshots of API response, Swagger UI, or terminal logs.
+
+<div align="center">
+
+### API Response
+
+  <img src="./assets/preview-create-user.png" alt="API Response" width="700" />
+
+  <img src="./assets/preview-create-user.png" alt="API Response" width="700" />
+
+### Winston Logger Output
+
+  <img src="./assets/preview-logger.png" alt="Logger Output" width="700" />
+
+### Swagger Documentation
+
+  <img src="./assets/preview-swagger.png" alt="Swagger UI" width="700" />
+
+### Redis Cache & Queue
+
+  <img src="./assets/preview-redis.png" alt="Redis" width="700" />
+
+</div>
+
+---
+
+## 📌 About
+
+**Refined Portfolio Backend** is a NestJS REST API that demonstrates production-ready backend patterns including:
+
+- JWT authentication with cookie-based token storage
+- Redis blacklist for token revocation on logout
+- Background job processing with BullMQ
+- Redis caching with automatic invalidation
+- Rate limiting per endpoint
+- Structured logging with Winston
+- OTP flow for email verification and password reset
+- Avatar upload with Cloudinary
+- Global exception handling
+
+---
+
+## 🧱 Tech Stack
+
+| Category      | Technology          |
+| ------------- | ------------------- |
+| Framework     | NestJS              |
+| Language      | TypeScript          |
+| Database      | PostgreSQL          |
+| ORM           | Prisma              |
+| Cache & Queue | Redis + BullMQ      |
+| Auth          | JWT + Passport      |
+| Logger        | Winston             |
+| File Upload   | Cloudinary + Multer |
+| Mail          | Nodemailer          |
+| Testing       | Jest                |
+
+---
+
+## 📁 Project Structure
 
 ```bash
-$ npm install
+backend/
+├── src/
+│   ├── auth/                  # Register, login, logout, OTP
+│   ├── users/                 # User management (CRUD, avatar)
+│   ├── health/                # Health check endpoint
+│   ├── common/
+│   │   ├── blacklist/         # JWT blacklist (Redis)
+│   │   ├── cache/             # Cache service wrapper
+│   │   ├── cloudinary/        # Cloudinary queue & processor
+│   │   ├── config/            # Cloudinary & Multer config
+│   │   ├── constants/         # Queue keys & cache keys
+│   │   ├── decorators/        # CurrentUser, Public, Role
+│   │   ├── filters/           # Global exception filter
+│   │   ├── guards/            # JWT, Roles, Throttler guards
+│   │   ├── hash/              # Bcrypt hashing service
+│   │   ├── interceptors/      # Response interceptor
+│   │   ├── logger/            # Winston logger
+│   │   ├── mail/              # Mail service + BullMQ processor
+│   │   ├── middleware/        # HTTP logger middleware
+│   │   ├── otp/               # OTP generate & verify
+│   │   ├── prisma/            # Prisma service
+│   │   ├── redis/             # Redis module
+│   │   └── utils/             # AppError, Prisma error utils
+│   ├── app.module.ts
+│   └── main.ts
+├── test/                      # E2E & unit test mocks
+├── prisma/                    # Prisma schema & migrations
+├── logs/                      # Winston log files (auto-created)
+├── .env.example
+├── docker-compose.yml
+└── package.json
 ```
 
-## Compile and run the project
+---
+
+## 🚀 Quick Start
+
+### 1. Clone repository
 
 ```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+git clone https://github.com/your-username/Refined-Portfolio.git
+cd Refined-Portfolio/backend
 ```
 
-## Run tests
+### 2. Install dependencies
 
 ```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+npm install
 ```
 
-## Deployment
-
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
-
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+### 3. Setup environment variables
 
 ```bash
-$ npm install -g @nestjs/mau
-$ mau deploy
+cp .env.example .env
+# Edit .env according to your configuration
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+### 4. Start Redis with Docker
 
-## Resources
+```bash
+docker compose up -d
+```
 
-Check out a few resources that may come in handy when working with NestJS:
+### 5. Run Prisma migration
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+```bash
+npx prisma migrate dev
+npx prisma generate
+```
 
-## Support
+### 6. Start development server
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+```bash
+npm run start:dev
+```
 
-## Stay in touch
+API runs at `http://localhost:4000`
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+---
 
-## License
+## ⚙️ Environment Variables
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+```env
+# App
+APP_NAME=portofolio-backend
+NODE_ENV=development
+LOG_LEVEL=debug
+PORT=3000
+
+# Database
+DATABASE_URL=postgresql://USER:PASSWORD@localhost:5432/DB_NAME
+
+# JWT
+SECRET_KEY=your_jwt_secret_here
+
+# Redis
+REDIS_HOST=localhost
+REDIS_PORT=6379
+
+# Cloudinary
+CLOUDINARY_NAME=
+CLOUDINARY_API_KEY=
+CLOUDINARY_API_SECRET=
+
+# Mail
+MAIL_HOST=
+MAIL_PORT=
+MAIL_USER=
+MAIL_PASSWORD=
+```
+
+---
+
+## 🔐 Authentication Flow
+
+```
+Register → Login → JWT stored in HttpOnly Cookie
+→ Every request automatically sends the cookie
+→ Logout → token added to Redis blacklist → cookie cleared
+→ Blacklisted tokens can no longer be used
+```
+
+---
+
+## 📮 API Endpoints
+
+### Auth
+
+| Method | Endpoint                        | Description                     | Auth |
+| ------ | ------------------------------- | ------------------------------- | ---- |
+| POST   | `/auth/register`                | Register a new user             | ❌   |
+| POST   | `/auth/login`                   | Login & set cookie              | ❌   |
+| POST   | `/auth/logout`                  | Logout & blacklist token        | ✅   |
+| POST   | `/auth/forgot-password`         | Send OTP for password reset     | ✅   |
+| POST   | `/auth/reset-password`          | Reset password using OTP        | ✅   |
+| POST   | `/auth/send-verification-email` | Send OTP for email verification | ✅   |
+| POST   | `/auth/verify-email`            | Verify email using OTP          | ✅   |
+| POST   | `/auth/refresh-otp`             | Refresh OTP                     | ✅   |
+
+### Users
+
+| Method | Endpoint         | Description             | Auth     |
+| ------ | ---------------- | ----------------------- | -------- |
+| GET    | `/users/findall` | Get all users (admin)   | ✅ Admin |
+| GET    | `/users/me`      | Get own profile         | ✅       |
+| PATCH  | `/users/me`      | Update profile + avatar | ✅       |
+| DELETE | `/users/me`      | Delete account          | ✅       |
+
+### Health
+
+| Method | Endpoint  | Description           |
+| ------ | --------- | --------------------- |
+| GET    | `/health` | Check database status |
+
+---
+
+## 📬 Postman Collection
+
+Import this collection into Postman to try all endpoints directly.
+
+<div align="center">
+
+[![Run in Postman](https://run.pstmn.io/button.svg)](https://web.postman.co/workspace/My-Workspace~37a96f9a-70f8-4951-8e4c-b9ed9dcd9ef2/collection/36964252-21115b17-2d26-4b5d-be29-8e9bb1597ce0?action=share&source=copy-link&creator=36964252)
+
+</div>
+
+Or download manually: [Refined-Portfolio.postman_collection.json](./docs/Portofolio.postman_collection.json)
+
+---
+
+## ✅ Scripts
+
+```bash
+# Development
+npm run start:dev
+
+# Production build
+npm run build
+npm run start:prod
+
+# Testing
+npm run test
+npm run test:e2e
+npm run test:cov
+
+# Prisma
+npx prisma migrate dev
+npx prisma generate
+npx prisma studio
+```
+
+---
+
+## 🗺️ Roadmap
+
+- [x] JWT Authentication with cookie
+- [x] Redis blacklist for logout
+- [x] Rate limiting per endpoint
+- [x] Redis caching with auto invalidation
+- [x] BullMQ queue for email & Cloudinary
+- [x] Winston structured logging
+- [x] OTP flow (reset password & email verification)
+- [x] Global exception filter
+- [x] Unit & E2E testing
+- [x] Swagger API documentation
+- [x] CI/CD pipeline
+- [x] Deployment
+
+---
+
+## 📄 License
+
+This project is licensed under the **MIT License**.
+
+---
+
+<div align="center">
+  Built with 🔥 for learning and growth.
+</div>
