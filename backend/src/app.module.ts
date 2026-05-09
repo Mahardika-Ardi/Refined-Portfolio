@@ -34,12 +34,14 @@ import { CloudinaryModule } from './common/cloudinary/cloudinary.module';
       storage: new ThrottlerStorageRedisService({
         host: process.env.REDIS_HOST || 'localhost',
         port: Number(process.env.REDIS_PORT) || 6379,
+        password: process.env.REDIS_PASSWORD,
       }),
     }),
     BullModule.forRoot({
       connection: {
         host: process.env.REDIS_HOST || 'localhost',
         port: Number(process.env.REDIS_PORT) || 6379,
+        password: process.env.REDIS_PASSWORD,
       },
     }),
     PrismaModule,
